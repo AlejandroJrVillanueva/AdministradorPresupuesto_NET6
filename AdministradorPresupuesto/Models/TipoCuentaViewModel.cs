@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AdministradorPresupuesto.Models
 {
-    public class TipoCuenta
+    public class TipoCuentaViewModel
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")]

@@ -11,7 +11,7 @@ namespace AdministradorPresupuesto.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Crear(TipoCuenta tipoCuenta)
+        public IActionResult Crear(TipoCuentaViewModel tipoCuenta)
         {
             if (!ModelState.IsValid)
             {
