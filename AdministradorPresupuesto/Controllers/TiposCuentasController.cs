@@ -27,8 +27,18 @@ namespace AdministradorPresupuesto.Controllers
             {
                 return View(tipoCuenta);
             }
-
+            
             tipoCuenta.UsuarioId = 1;
+
+            var existeTiposCuentas = 
+                await _tiposCuentasRepository.ExisteNombrePorUsuarioId(tipoCuenta.Nombre, tipoCuenta.UsuarioId);
+            
+            if (existeTiposCuentas)
+            {
+                ModelState.AddModelError(nameof(tipoCuenta.Nombre), $"El nombre {tipoCuenta.Nombre} ya existe.");
+                return View(tipoCuenta);
+            }
+            
             await _tiposCuentasRepository.Crear(tipoCuenta);
 
             return View();
