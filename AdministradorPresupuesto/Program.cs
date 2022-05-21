@@ -1,4 +1,4 @@
-using AdministradorPresupuesto.Servicio;
+using AdministradorPresupuesto.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 

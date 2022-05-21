@@ -1,5 +1,5 @@
 ﻿using AdministradorPresupuesto.Models;
-using AdministradorPresupuesto.Servicio;
+using AdministradorPresupuesto.Servicios;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdministradorPresupuesto.Controllers

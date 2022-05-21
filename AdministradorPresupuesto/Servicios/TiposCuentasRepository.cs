@@ -2,7 +2,7 @@
 using Dapper;
 using System.Data.SqlClient;
 
-namespace AdministradorPresupuesto.Servicio
+namespace AdministradorPresupuesto.Servicios
 {
     public interface ITiposCuentasRepository
     {
