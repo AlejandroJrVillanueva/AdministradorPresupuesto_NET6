@@ -43,5 +43,17 @@ namespace AdministradorPresupuesto.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ValidarExisteTiposCuentas(string nombre)
+        {
+            var usuarioId = 1;
+            var existeTiposCuentas = await _tiposCuentasRepository.ExisteNombrePorUsuarioId(nombre, usuarioId);
+            if (existeTiposCuentas)
+            {
+                return Json($"El nombre {nombre} ya existe");
+            }
+            return Json("true");
+        }
     }
 }
