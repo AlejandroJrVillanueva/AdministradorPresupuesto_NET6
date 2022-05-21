@@ -21,7 +21,7 @@ namespace AdministradorPresupuesto.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Crear(TipoCuentaViewModel tipoCuenta)
+        public async Task<IActionResult> CrearAsync(TipoCuentaViewModel tipoCuenta)
         {
             if (!ModelState.IsValid)
             {
@@ -29,7 +29,8 @@ namespace AdministradorPresupuesto.Controllers
             }
 
             tipoCuenta.UsuarioId = 1;
-            _tiposCuentasRepository.Crear(tipoCuenta);
+            await _tiposCuentasRepository.Crear(tipoCuenta);
+
             return View();
         }
     }

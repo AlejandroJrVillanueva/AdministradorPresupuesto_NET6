@@ -6,7 +6,7 @@ namespace AdministradorPresupuesto.Servicio
 {
     public interface ITiposCuentasRepository
     {
-        void Crear(TipoCuentaViewModel tipoCuentaViewModel);
+        Task Crear(TipoCuentaViewModel tipoCuentaViewModel);
     }
     public class TiposCuentasRepository : ITiposCuentasRepository
     {
@@ -16,10 +16,11 @@ namespace AdministradorPresupuesto.Servicio
             connectionString = configuration.GetConnectionString("DesarrolloConnection");
         }
 
-        public void Crear(TipoCuentaViewModel tipoCuentaViewModel)
+        public async Task Crear(TipoCuentaViewModel tipoCuentaViewModel)
         {
             using var connection = new SqlConnection(connectionString);
-            var id = connection.QuerySingle<int>($@"INSERT INTO TiposCuentas(Nombre,UsuarioId,Orden)
+            var id = await connection.QuerySingleAsync<int>
+                ($@"INSERT INTO TiposCuentas(Nombre,UsuarioId,Orden)
                 VALUES (@Nombre,@UsuarioId,0); 
                 SELECT SCOPE_IDENTITY();", tipoCuentaViewModel);
 
