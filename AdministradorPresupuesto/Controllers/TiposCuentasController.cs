@@ -20,6 +20,13 @@ namespace AdministradorPresupuesto.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var usuarioId = 1;
+            var tiposCuentas = await _tiposCuentasRepository.Obtener(usuarioId);
+            return View(tiposCuentas);
+        }
         [HttpPost]
         public async Task<IActionResult> CrearAsync(TipoCuentaViewModel tipoCuenta)
         {
@@ -41,7 +48,7 @@ namespace AdministradorPresupuesto.Controllers
             
             await _tiposCuentasRepository.Crear(tipoCuenta);
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
