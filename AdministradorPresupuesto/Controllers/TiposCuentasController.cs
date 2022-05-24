@@ -76,5 +76,19 @@ namespace AdministradorPresupuesto.Controllers
             }
             return View(tipoCuenta);
         }
+        [HttpPost]
+        public async Task<IActionResult> Editar(TipoCuentaViewModel tipoCuentaViewModel)
+        {
+            var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
+            var existeTipoCuenta = await _tiposCuentasRepository.ObtenerPorId(tipoCuentaViewModel.Id, usuarioId);
+
+            if (existeTipoCuenta is null)
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+
+            await _tiposCuentasRepository.Actualizar(tipoCuentaViewModel);
+            return RedirectToAction("Index");
+        }
     }
 }
