@@ -12,6 +12,7 @@ namespace AdministradorPresupuesto.Servicios
         Task<bool> ExisteNombrePorUsuarioId(string nombre, int usuarioId);
         Task<IEnumerable<TipoCuentaViewModel>> Obtener(int usuarioId);
         Task<TipoCuentaViewModel> ObtenerPorId(int id, int usuarioId);
+        Task Ordenar(IEnumerable<TipoCuentaViewModel> tiposCuentas);
     }
     public class TiposCuentasRepository : ITiposCuentasRepository
     {
@@ -49,7 +50,8 @@ namespace AdministradorPresupuesto.Servicios
             return await connection.QueryAsync<TipoCuentaViewModel>(
                 @"  SELECT Id, Nombre, Orden 
                     FROM TiposCuentas
-                    WHERE UsuarioId = @UsuarioId;", new { usuarioId});
+                    WHERE UsuarioId = @UsuarioId
+                    ORDER BY Orden;", new { usuarioId});
         }
 
         public async Task Actualizar(TipoCuentaViewModel tipoCuentaViewModel)
@@ -76,6 +78,14 @@ namespace AdministradorPresupuesto.Servicios
             await connection.ExecuteAsync(
                 @"  DELETE FROM TiposCuentas
                     WHERE Id = @Id;", new { id });
+        }
+
+        public async Task Ordenar(IEnumerable<TipoCuentaViewModel> tiposCuentas)
+        {
+            using var connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync(
+                @"  UPDATE TiposCuentas SET Orden = @Orden 
+                    WHERE Id = @Id ", tiposCuentas);
         }
     }
 }
