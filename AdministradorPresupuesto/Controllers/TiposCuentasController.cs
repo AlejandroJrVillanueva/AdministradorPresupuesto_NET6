@@ -117,5 +117,11 @@ namespace AdministradorPresupuesto.Controllers
             await _tiposCuentasRepository.Borrar(id);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Ordenar([FromBody] int[] ids)
+        {
+            return Ok();
+        }
     }
 }
