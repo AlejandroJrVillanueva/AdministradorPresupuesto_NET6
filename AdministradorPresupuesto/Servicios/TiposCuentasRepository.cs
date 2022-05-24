@@ -7,6 +7,7 @@ namespace AdministradorPresupuesto.Servicios
     public interface ITiposCuentasRepository
     {
         Task Actualizar(TipoCuentaViewModel tipoCuentaViewModel);
+        Task Borrar(int id);
         Task Crear(TipoCuentaViewModel tipoCuentaViewModel);
         Task<bool> ExisteNombrePorUsuarioId(string nombre, int usuarioId);
         Task<IEnumerable<TipoCuentaViewModel>> Obtener(int usuarioId);
@@ -67,6 +68,14 @@ namespace AdministradorPresupuesto.Servicios
                 @"  SELECT Id, Nombre, Orden
                     FROM TiposCuentas
                     WHERE Id = @Id AND UsuarioId = @UsuarioId;", new { id, usuarioId });
+        }
+
+        public async Task Borrar(int id)
+        {
+            using var connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync(
+                @"  DELETE FROM TiposCuentas
+                    WHERE Id = @Id;", new { id });
         }
     }
 }

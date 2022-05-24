@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdministradorPresupuesto.Controllers
 {
-    public class TiposCuentasController: Controller
+    public class TiposCuentasController : Controller
     {
         private readonly ITiposCuentasRepository _tiposCuentasRepository;
         private readonly IServicioUsuarios _servicioUsuarios;
@@ -38,15 +38,15 @@ namespace AdministradorPresupuesto.Controllers
             }
 
             tipoCuenta.UsuarioId = _servicioUsuarios.ObtenerUsuarioId();
-            var existeTiposCuentas = 
+            var existeTiposCuentas =
                 await _tiposCuentasRepository.ExisteNombrePorUsuarioId(tipoCuenta.Nombre, tipoCuenta.UsuarioId);
-            
+
             if (existeTiposCuentas)
             {
                 ModelState.AddModelError(nameof(tipoCuenta.Nombre), $"El nombre {tipoCuenta.Nombre} ya existe.");
                 return View(tipoCuenta);
             }
-            
+
             await _tiposCuentasRepository.Crear(tipoCuenta);
             return RedirectToAction("Index");
         }
@@ -67,7 +67,7 @@ namespace AdministradorPresupuesto.Controllers
         [HttpGet]
         public async Task<IActionResult> Editar(int id)
         {
-            var usuarioId= _servicioUsuarios.ObtenerUsuarioId();
+            var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
             var tipoCuenta = await _tiposCuentasRepository.ObtenerPorId(id, usuarioId);
 
             if (tipoCuenta is null)
@@ -88,6 +88,33 @@ namespace AdministradorPresupuesto.Controllers
             }
 
             await _tiposCuentasRepository.Actualizar(tipoCuentaViewModel);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Borrar(int id)
+        {
+            var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
+            var tipoCuenta = await _tiposCuentasRepository.ObtenerPorId(id, usuarioId);
+
+            if (tipoCuenta is null)
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+            return View(tipoCuenta);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BorrarTipoCuenta(int id)
+        {
+            var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
+            var existeTipoCuenta = await _tiposCuentasRepository.ObtenerPorId(id, usuarioId);
+
+            if (existeTipoCuenta is null)
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+            await _tiposCuentasRepository.Borrar(id);
             return RedirectToAction("Index");
         }
     }
