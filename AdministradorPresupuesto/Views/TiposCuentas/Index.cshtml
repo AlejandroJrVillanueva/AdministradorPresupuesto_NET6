@@ -4,7 +4,7 @@
 }
 
 <h1>Tipos de Cuentas</h1>
-<h5>El tipo de cuenta se refiere a cómo podemos agrupar cuentas. Ejemplos: Préstamos, tarjetas de crédito, salario, etc.</h5>
+<h5 class="mb-3">El tipo de cuenta se refiere a cómo podemos agrupar cuentas. Ejemplos: Préstamos, tarjetas de crédito, salario, etc.</h5>
 
 <a asp-action="Crear" class="btn btn-primary mb-3">Crear Nuevo</a>
 
@@ -16,7 +16,7 @@
             <th>Nombre</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id=reordenable>
     @foreach (var tipoCuenta in Model)
     {
         <tr>    
@@ -32,3 +32,10 @@
     </tbody>
 </table>
 
+@section Scripts{
+    <script>
+        $(function(){
+            $("#reordenable").sortable();
+        })
+    </script>
+}
