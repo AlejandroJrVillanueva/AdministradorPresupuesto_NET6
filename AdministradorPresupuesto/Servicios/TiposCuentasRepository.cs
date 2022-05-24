@@ -6,9 +6,11 @@ namespace AdministradorPresupuesto.Servicios
 {
     public interface ITiposCuentasRepository
     {
+        Task Actualizar(TipoCuentaViewModel tipoCuentaViewModel);
         Task Crear(TipoCuentaViewModel tipoCuentaViewModel);
         Task<bool> ExisteNombrePorUsuarioId(string nombre, int usuarioId);
         Task<IEnumerable<TipoCuentaViewModel>> Obtener(int usuarioId);
+        Task<TipoCuentaViewModel> ObtenerPorId(int id, int usuarioId);
     }
     public class TiposCuentasRepository : ITiposCuentasRepository
     {
@@ -47,6 +49,24 @@ namespace AdministradorPresupuesto.Servicios
                 @"  SELECT Id, Nombre, Orden 
                     FROM TiposCuentas
                     WHERE UsuarioId = @UsuarioId;", new { usuarioId});
+        }
+
+        public async Task Actualizar(TipoCuentaViewModel tipoCuentaViewModel)
+        {
+            using var connection = new SqlConnection(connectionString);
+            //ExecuteAsync = "ejecuta una query que no devuelve nada"
+            await connection.ExecuteAsync(
+                @"  UPDATE TiposCuentas 
+                    SET Nombre = @Nombre
+                    WHERE Id = @Id; ", tipoCuentaViewModel);
+        }
+        public async Task<TipoCuentaViewModel> ObtenerPorId(int id, int usuarioId)
+        {
+            using var connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<TipoCuentaViewModel>(
+                @"  SELECT Id, Nombre, Orden
+                    FROM TiposCuentas
+                    WHERE Id = @Id AND UsuarioId = @UsuarioId;", new { id, usuarioId });
         }
     }
 }
